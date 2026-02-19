@@ -1,0 +1,20 @@
+/*
+
+Základní syntaxe CSS
+
+selector {
+    vlastnost -1: hodnota;
+    vlastnost -2: hodnota;
+    vlastnost -3: hodnota;
+    vlastnost -4: hodnota;
+    vlastnost -5: hodnota;
+    vlastnost -6: hodnota;
+}
+
+*/
+
+body {
+    background-color: chocolate;
+    font-family: Arial, Helvetica, sans-serif;
+
+}

@@ -1,0 +1,56 @@
+<?php
+$name = "";
+$message = "";
+$age = 0;
+
+
+if($_SERVER["REQUEST_METHOD"] == "POST") {
+    $name = $_POST["my_name"];
+    if($name == "Anna") {
+        $message = "Ahoj Anno";
+        $age = $_POST["my_age"];
+    } else {
+        $message = "Neznám tě";
+            
+    }
+}
+
+?>
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test PHP</title>
+</head>
+<body>
+    <h1>Test formuláře</h1>
+    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Esse, quasi asperiores. Perspiciatis quo maiores aliquam magni porro aspernatur cumque! Aut placeat est quia nobis odit sed, vero quos aperiam minus!</p>
+    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem voluptatibus quae omnis aliquam inventore nisi id nam numquam excepturi quisquam totam veritatis beatae porro, perspiciatis, vitae suscipit magni. Temporibus, quidem!</p>
+    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Temporibus unde quas eum expedita ullam. Atque inventore, ad impedit enim iusto nemo placeat excepturi iure ullam sit facilis commodi deleniti voluptates.</p>
+    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Magni assumenda natus nisi laboriosam sint ab consequatur laudantium inventore recusandae veniam vero qui ipsa, odit neque dicta deserunt nostrum cupiditate earum. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Non, deleniti tempore dicta repellendus adipisci a dolore quam suscipit, voluptatibus eum, officia quod quasi beatae eveniet saepe! Voluptatum saepe esse cum. Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus ut, incidunt sequi amet perspiciatis magnam nihil totam minus commodi, recusandae sed vero reiciendis aperiam accusamus illo ab! Soluta, tempora doloribus.</p>
+    <form method="post">
+        <input type="text" name="my_name" placeholder="Zadejte jméno">
+        <input type="number" name="my_age" placeholder="Zadejte věk">
+        <button type="submit">Odeslat</button> 
+    </form>
+
+
+    <p>
+        <?php 
+            echo "Výstup: "; 
+            echo $message;                
+        ?>
+    </p>
+    <p>
+        <?php
+            echo "Tvůj věk: "; 
+            echo $age; 
+        ?>
+    </p>
+    
+</body>
+</html>

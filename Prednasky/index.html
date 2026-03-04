@@ -3,16 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles/style.css">
+    <!-- <link rel="stylesheet" href="styles/style.css"> -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script> 
     <title>Web 01 - Anna Gebhardtová</title>
+    <style type="text/tailwindcss">
+      @theme {
+        --color-myPrimaryColor: #f96d00;
+      }
+
+      @layer base {
+        h2 {
+            @apply text-2xl mt-4
+        }
+
+        p {
+            @apply text-base font-serif mt-2 
+        }
+
+        .card {
+            @apply bg-teal-800 p-5 rounded-xl    
+        }
+
+        nav li {
+            @apply flex-grow basis-full 
+        }
+
+        nav a {
+            @apply 
+                block 
+                bg-teal-600
+                text-white
+                rounded-md
+                py-2
+                px-4
+                text-center
+                no-underline
+                whitespace-nowrap
+                hover:bg-teal-800
+        }
+      }
+
+    </style>
+
 </head>
-<body>
-    <div class="page-wrapper">
-        <header>
-            <h1>WA 2026 - první web</h1>
+<body class="bg-teal-500 text-gray-200">
+    <div class="page-wrapper w-[95%] mx-auto lg:w-[80%]">
+        <header class="bg-myPrimaryColor px-4 py-6">
+            <h1 class="text-4xl">WA 2026 - první web</h1>
         </header>
-        <nav>
-            <ul>
+        <nav class="my-4">
+            <ul class="flex gap-3 list-none p-0">
                 <li><a href="index.html">Úvod</a></li>
                 <li><a href="#">O nás</a></li>
                 <li><a href="#">Kontakt</a></li>
@@ -20,7 +60,7 @@
             </ul>
         </nav>
         <main>
-            <section class="grid-container">
+            <section class="grid-container grid gap-2 grid-cols-[repeat(auto-fit,minmax(260px,1fr))]">
                 <article class="card">
                     <h2>Titulek článku 1</h2>
                     <p><b>Lorem ipsum dolor sit amet consectetur adipisicing elit.</b> Laudantium quae eveniet, repudiandae hic quasi quia dolores temporibus dolore numquam error amet voluptatum debitis sint fugiat nemo officia? Tempora, in nulla?</p>            
@@ -53,7 +93,7 @@
 
 
 
-        <footer>
+        <footer class="bg-myPrimaryColor px-4 py-6 text-center">
             <p>&copy; WA&nbsp;2026 - Anna Gebhardtová</p>
         </footer>
 

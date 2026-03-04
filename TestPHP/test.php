@@ -28,7 +28,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
     <h1>Test formuláře</h1>
-    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Esse, quasi asperiores. Perspiciatis quo maiores aliquam magni porro aspernatur cumque! Aut placeat est quia nobis odit sed, vero quos aperiam minus!</p>
     <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem voluptatibus quae omnis aliquam inventore nisi id nam numquam excepturi quisquam totam veritatis beatae porro, perspiciatis, vitae suscipit magni. Temporibus, quidem!</p>
     <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Temporibus unde quas eum expedita ullam. Atque inventore, ad impedit enim iusto nemo placeat excepturi iure ullam sit facilis commodi deleniti voluptates.</p>
     <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Magni assumenda natus nisi laboriosam sint ab consequatur laudantium inventore recusandae veniam vero qui ipsa, odit neque dicta deserunt nostrum cupiditate earum. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Non, deleniti tempore dicta repellendus adipisci a dolore quam suscipit, voluptatibus eum, officia quod quasi beatae eveniet saepe! Voluptatum saepe esse cum. Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus ut, incidunt sequi amet perspiciatis magnam nihil totam minus commodi, recusandae sed vero reiciendis aperiam accusamus illo ab! Soluta, tempora doloribus.</p>

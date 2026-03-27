@@ -13,7 +13,7 @@
         </div>
         
         <div>
-            <form action="../../controllers/BookController.php" method="post" enctype="multipart/form-data">
+            <form action="<?= BASE_URL ?>/index.php?url=book/store/index.php?url=book/store" method="post" enctype="multipart/form-data">
                 <div>
                     <div>
                         <label for="title">Název knihy <span>*</span></label>

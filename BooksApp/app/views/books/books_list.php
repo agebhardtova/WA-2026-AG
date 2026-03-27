@@ -10,8 +10,8 @@
         <h1>Aplikace Knihovna</h1>
         <nav>
             <ul>
-                <li><a href="/WA-2026-AG/BooksApp/public/index.php">Seznam knih (Domů)</a></li>
-                <li><a href="/WA-2026-AG/BooksApp/public/index.php?url=book/create">Přidat novou knihu</a></li>
+                <li><a href="<?= BASE_URL ?>/index.php">Seznam knih (Domů)</a></li>
+                <li><a href="<?= BASE_URL ?>/index.php?url=book/create">Přidat novou knihu</a></li>
             </ul>
         </nav>
     </header>

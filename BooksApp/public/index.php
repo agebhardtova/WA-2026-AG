@@ -1,20 +1,18 @@
 <?php
-// Nastartování relací pro ukládání dočasných dat (Flash zprávy)
+// Nastartování relací pro ukládání dočasných dat (Flash zprávy) - PŘIDÁNO PODLE UČITELE
 session_start();
-// Pro účely výuky a ladění na lokálním serveru (např. XAMPP)
-// je vhodné zapnout kompletní zobrazování chyb.
+
+// Pro účely výuky a ladění na lokálním serveru
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 // Dynamické zjištění základní adresy aplikace
-// Vypočítá absolutní cestu ke složce, ve které běží tento index.php
 $baseDir = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME']));
 define('BASE_URL', $baseDir);
-echo($baseDir);
 
-// Načtení třídy routeru, která se postará o zpracování URL
+// Načtení třídy routeru
 require_once '../core/App.php';
 
-// Inicializace aplikace a spuštění procesu routování
+// Inicializace aplikace
 $app = new App();

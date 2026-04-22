@@ -35,6 +35,15 @@ class AuthController {
                 exit;
             }
 
+            // --- PŘIDANÁ KONTROLA BEZPEČNOSTI HESLA ---
+            // (min 8 znaků a alespoň 1 číslo)
+            if (strlen($password) < 8 || !preg_match('/[0-9]/', $password)) {
+                $this->addErrorMessage('Heslo je příliš slabé! Musí mít alespoň 8 znaků a obsahovat minimálně jednu číslici.');
+                header('Location: ' . BASE_URL . '/index.php?url=auth/register');
+                exit;
+            }
+            // ------------------------------------------
+
             // Napojení na DB a Model
             require_once '../app/models/Database.php';
             require_once '../app/models/User.php';

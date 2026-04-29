@@ -18,9 +18,9 @@ class Book {
         string $description,
         string $link,
         array $images,
-        int $userId // !!! ZMĚNA: Přidán parametr pro uložení autora
+        int $userId 
     ): bool {
-        // !!! ZMĚNA: Do SQL dotazu přidáno created_by
+        
         $sql = "INSERT INTO books (title, author, category, subcategory, year, price, isbn, description, link, images, created_by)
                 VALUES (:title, :author, :category, :subcategory, :year, :price, :isbn, :description, :link, :images, :created_by)";
         
@@ -37,7 +37,7 @@ class Book {
             ':description' => $description,
             ':link' => $link,
             ':images' => json_encode($images),
-            ':created_by' => $userId // !!! ZMĚNA: Zápis uživatele do databáze
+            ':created_by' => $userId 
         ]);
     }
 
@@ -57,10 +57,13 @@ class Book {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    // !!! ZMĚNA K ÚKOLU 22: Přidán parametr $userId s výchozí hodnotou null
     public function update(
         $id, $title, $author, $category, $subcategory, 
-        $year, $price, $isbn, $description, $link, $images = []
+        $year, $price, $isbn, $description, $link, $images = [], 
+        $userId = null 
     ) {
+        // !!! ZMĚNA K ÚKOLU 22: Přidáno aktualizování sloupce updated_by
         $sql = "UPDATE books 
                 SET title = :title, 
                     author = :author, 
@@ -71,11 +74,13 @@ class Book {
                     isbn = :isbn, 
                     description = :description, 
                     link = :link, 
-                    images = :images
+                    images = :images,
+                    updated_by = :updated_by
                 WHERE id = :id";
                 
         $stmt = $this->db->prepare($sql);
 
+        // !!! ZMĚNA K ÚKOLU 22: Spárování hodnoty s databází
         return $stmt->execute([
             ':id' => $id,
             ':title' => $title,
@@ -87,7 +92,8 @@ class Book {
             ':isbn' => $isbn,
             ':description' => $description,
             ':link' => $link,
-            ':images' => json_encode($images)
+            ':images' => json_encode($images),
+            ':updated_by' => $userId 
         ]);
     }
 

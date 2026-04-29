@@ -35,10 +35,15 @@
                                 <td class="px-6 py-4 text-slate-600"><?= htmlspecialchars($book['author']) ?></td>
                                 <td class="px-6 py-4 text-slate-600"><?= htmlspecialchars($book['year']) ?></td>
                                 <td class="px-6 py-4 text-slate-900 font-semibold"><?= htmlspecialchars($book['price']) ?> Kč</td>
+                                
                                 <td class="px-6 py-4 text-right space-x-3">
                                     <a href="<?= BASE_URL ?>/index.php?url=book/show/<?= $book['id'] ?>" class="text-slate-400 hover:text-black font-semibold transition-colors">Detail</a>
-                                    <a href="<?= BASE_URL ?>/index.php?url=book/edit/<?= $book['id'] ?>" class="text-slate-400 hover:text-black font-semibold transition-colors">Upravit</a>
-                                    <a href="<?= BASE_URL ?>/index.php?url=book/delete/<?= $book['id'] ?>" onclick="return confirm('Opravdu chcete knihu smazat?')" class="text-slate-800 hover:text-black font-bold underline transition-colors">Smazat</a>
+                                    
+                                    <?php if (isset($_SESSION['user_id']) && $_SESSION['user_id'] === $book['created_by']): ?>
+                                        <a href="<?= BASE_URL ?>/index.php?url=book/edit/<?= $book['id'] ?>" class="text-slate-400 hover:text-black font-semibold transition-colors">Upravit</a>
+                                        <a href="<?= BASE_URL ?>/index.php?url=book/delete/<?= $book['id'] ?>" onclick="return confirm('Opravdu chcete knihu smazat?')" class="text-slate-800 hover:text-black font-bold underline transition-colors">Smazat</a>
+                                    <?php endif; ?>
+
                                 </td>
                             </tr>
                         <?php endforeach; ?>

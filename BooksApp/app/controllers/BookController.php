@@ -44,12 +44,27 @@ class BookController {
 
     // 1. Zobrazení formuláře pro přidání nové knihy
     public function create() {
+        // 🔒 ZMĚNA: Kontrola, zda je uživatel přihlášen
+        if (!isset($_SESSION['user_id'])) {
+            $this->addErrorMessage('Pro přidání knihy se musíte nejprve přihlásit.');
+            header('Location: ' . BASE_URL . '/index.php?url=auth/login');
+            exit;
+        }
+
         require_once '../app/views/books/book_create.php';
     }
 
     // 2. Zpracování dat odeslaných z formuláře
     public function store() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            
+            // 🔒 ZMĚNA: Kontrola přihlášení a získání ID
+            if (!isset($_SESSION['user_id'])) {
+                $this->addErrorMessage('Pro uložení knihy musíte být přihlášeni.');
+                header('Location: ' . BASE_URL . '/index.php?url=auth/login');
+                exit;
+            }
+            $userId = $_SESSION['user_id'];
             
             $title = htmlspecialchars($_POST['title'] ?? '');
             $author = htmlspecialchars($_POST['author'] ?? '');
@@ -72,9 +87,12 @@ class BookController {
             $db = $database->getConnection();
 
             $bookModel = new Book($db);
+            
+            // !!! ZMĚNA: Přidán parametr $userId nakonec
             $isSaved = $bookModel->create(
                 $title, $author, $category, $subcategory, 
-                $year, $price, $isbn, $description, $link, $uploadedImages
+                $year, $price, $isbn, $description, $link, $uploadedImages,
+                $userId 
             );
 
             if ($isSaved) {
@@ -92,6 +110,13 @@ class BookController {
 
     // 3. Smazání existující knihy
     public function delete($id = null) {
+        // 🔒 ZMĚNA: Kontrola přihlášení
+        if (!isset($_SESSION['user_id'])) {
+            $this->addErrorMessage('Pro smazání knihy se musíte nejprve přihlásit.');
+            header('Location: ' . BASE_URL . '/index.php?url=auth/login');
+            exit;
+        }
+
         if (!$id) {
             $this->addErrorMessage('Nebylo zadáno ID knihy ke smazání.');
             header('Location: ' . BASE_URL . '/index.php');
@@ -103,8 +128,23 @@ class BookController {
 
         $database = new Database();
         $db = $database->getConnection();
-
         $bookModel = new Book($db);
+
+        // 🛡️ ZMĚNA: Kontrola vlastnictví před smazáním
+        $book = $bookModel->getById($id);
+
+        if (!$book) {
+            $this->addErrorMessage('Kniha nebyla nalezena, pravděpodobně již byla smazána.');
+            header('Location: ' . BASE_URL . '/index.php');
+            exit;
+        }
+
+        if ($book['created_by'] !== $_SESSION['user_id']) {
+            $this->addErrorMessage('Nemáte oprávnění smazat tuto knihu, protože nejste jejím autorem.');
+            header('Location: ' . BASE_URL . '/index.php');
+            exit;
+        }
+
         $isDeleted = $bookModel->delete($id);
 
         if ($isDeleted) {
@@ -119,6 +159,13 @@ class BookController {
 
     // 4. Zobrazení formuláře pro úpravu existující knihy
     public function edit($id = null) {
+        // 🔒 ZMĚNA: Kontrola přihlášení
+        if (!isset($_SESSION['user_id'])) {
+            $this->addErrorMessage('Pro úpravu knihy se musíte nejprve přihlásit.');
+            header('Location: ' . BASE_URL . '/index.php?url=auth/login');
+            exit;
+        }
+
         if (!$id) {
             $this->addErrorMessage('Nebylo zadáno ID knihy k úpravě.');
             header('Location: ' . BASE_URL . '/index.php');
@@ -140,6 +187,13 @@ class BookController {
             exit;
         }
 
+        // 🛡️ ZMĚNA: Kontrola vlastnictví
+        if ($book['created_by'] !== $_SESSION['user_id']) {
+            $this->addErrorMessage('Nemáte oprávnění upravovat tuto knihu, protože nejste jejím autorem.');
+            header('Location: ' . BASE_URL . '/index.php');
+            exit;
+        }
+
         require_once '../app/views/books/book_edit.php';
     }
 
@@ -153,6 +207,30 @@ class BookController {
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
+            // 🔒 ZMĚNA: Kontrola přihlášení
+            if (!isset($_SESSION['user_id'])) {
+                $this->addErrorMessage('Pro uložení změn se musíte nejprve přihlásit.');
+                header('Location: ' . BASE_URL . '/index.php?url=auth/login');
+                exit;
+            }
+
+            // 🛡️ ZMĚNA: Přesunutí komunikace s DB nahoru kvůli kontrole
+            require_once '../app/models/Database.php';
+            require_once '../app/models/Book.php';
+
+            $database = new Database();
+            $db = $database->getConnection();
+            $bookModel = new Book($db);
+
+            $book = $bookModel->getById($id);
+
+            // 🛡️ ZMĚNA: Kontrola vlastnictví (Autorizace) - "Skutečná zeď"
+            if (!$book || $book['created_by'] !== $_SESSION['user_id']) {
+                $this->addErrorMessage('Nemáte oprávnění ukládat změny u této knihy, protože nejste jejím autorem.');
+                header('Location: ' . BASE_URL . '/index.php');
+                exit;
+            }
+
             $title = htmlspecialchars($_POST['title'] ?? '');
             $author = htmlspecialchars($_POST['author'] ?? '');
             $isbn = htmlspecialchars($_POST['isbn'] ?? '');
@@ -165,34 +243,19 @@ class BookController {
             $link = htmlspecialchars($_POST['link'] ?? '');
             $description = htmlspecialchars($_POST['description'] ?? '');
 
-            // 1. Zkusíme nahrát NOVÉ obrázky (pokud uživatel nějaké vybral)
+            // Nahrání fotek s tvou logikou zachování starých
             $uploadedImages = $this->processImageUploads(); 
 
-            // 2. Příprava modelů a databáze
-            require_once '../app/models/Database.php';
-            require_once '../app/models/Book.php';
-
-            $database = new Database();
-            $db = $database->getConnection();
-            $bookModel = new Book($db);
-
-            // ZDE JE ZMĚNA (KROK 5): Záchrana starých obrázků
-            // Pokud je pole s novými obrázky prázdné, uživatel nevybral novou fotku.
             if (empty($uploadedImages)) {
-                // Vytáhneme si knihu z DB, jak vypadala doteď
                 $existingBook = $bookModel->getById($id);
-                
-                // Obrázky jsou v DB uložené jako text (JSON). Převedeme je zpět na pole.
                 $oldImagesString = $existingBook['images'] ?? '[]';
                 $uploadedImages = json_decode($oldImagesString, true);
 
-                // Pojistka, kdyby to nebylo pole
                 if (!is_array($uploadedImages)) {
                     $uploadedImages = [];
                 }
             }
 
-            // 3. Volání updatu nad modelem (teď už se staré obrázky nepřepíšou prázdnotou)
             $isUpdated = $bookModel->update(
                 $id, $title, $author, $category, $subcategory, 
                 $year, $price, $isbn, $description, $link, $uploadedImages

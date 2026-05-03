@@ -10,8 +10,8 @@ class Book {
     public function create(
         string $title,
         string $author,
-        string $category,
-        string $subcategory,
+        int $category, // ZMĚNA DLE UČITELE: Očekáváme INT (číslo)
+        int $subcategory, // ZMĚNA: Subcategory je také INT
         int $year,
         float $price,
         string $isbn,
@@ -57,13 +57,11 @@ class Book {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    // !!! ZMĚNA K ÚKOLU 22: Přidán parametr $userId s výchozí hodnotou null
     public function update(
         $id, $title, $author, $category, $subcategory, 
         $year, $price, $isbn, $description, $link, $images = [], 
         $userId = null 
     ) {
-        // !!! ZMĚNA K ÚKOLU 22: Přidáno aktualizování sloupce updated_by
         $sql = "UPDATE books 
                 SET title = :title, 
                     author = :author, 
@@ -80,7 +78,6 @@ class Book {
                 
         $stmt = $this->db->prepare($sql);
 
-        // !!! ZMĚNA K ÚKOLU 22: Spárování hodnoty s databází
         return $stmt->execute([
             ':id' => $id,
             ':title' => $title,

@@ -28,14 +28,37 @@
                     <label for="year" class="block text-sm font-medium text-slate-300 mb-1">Rok vydání <span class="text-rose-500">*</span></label>
                     <input type="number" id="year" name="year" required class="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-blue-500">
                 </div>
+                
+                <!-- Kategorie (Roletka z DB) -->
                 <div>
-                    <label for="category" class="block text-sm font-medium text-slate-300 mb-1">Kategorie</label>
-                    <input type="text" id="category" name="category" class="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-blue-500">
+                     <label for="category" class="block text-sm font-medium text-slate-300 mb-1">Kategorie <span class="text-rose-500">*</span></label>
+                     <select id="category" name="category" required class="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-blue-500">
+                        <option value="">-- Vyberte kategorii --</option>
+                        <?php if (!empty($categories)): ?>
+                            <?php foreach ($categories as $cat): ?>
+                                <option value="<?= htmlspecialchars($cat['id']) ?>">
+                                    <?= htmlspecialchars($cat['name']) ?>
+                                </option>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </select>
                 </div>
+                
+                <!-- Podkategorie (Roletka z DB) -->
                 <div>
                     <label for="subcategory" class="block text-sm font-medium text-slate-300 mb-1">Podkategorie</label>
-                    <input type="text" id="subcategory" name="subcategory" class="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-blue-500">
+                    <select id="subcategory" name="subcategory" class="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-blue-500">
+                        <option value="">-- Vyberte podkategorii --</option>
+                        <?php if (!empty($subcategories)): ?>
+                            <?php foreach ($subcategories as $subcat): ?>
+                                <option value="<?= htmlspecialchars($subcat['id']) ?>">
+                                    <?= htmlspecialchars($subcat['name']) ?>
+                                </option>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </select>
                 </div>
+
                 <div>
                     <label for="price" class="block text-sm font-medium text-slate-300 mb-1">Cena knihy (Kč)</label>
                     <input type="number" id="price" name="price" step="0.5" class="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-blue-500">

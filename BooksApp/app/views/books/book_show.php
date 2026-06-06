@@ -41,8 +41,8 @@
                     <div>
                         <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Kategorie</h3>
                         <p class="text-slate-800">
-                            <?= htmlspecialchars($book['category'] ?? 'Neurčeno') ?>
-                            <?= !empty($book['subcategory']) ? ' / ' . htmlspecialchars($book['subcategory']) : '' ?>
+                            <?= htmlspecialchars($book['category_name'] ?? 'Neurčeno') ?>
+                            <?= !empty($book['subcategory_name']) ? ' / ' . htmlspecialchars($book['subcategory_name']) : '' ?>
                         </p>
                     </div>
                     <div>

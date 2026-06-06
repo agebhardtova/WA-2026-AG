@@ -10,8 +10,8 @@ class Book {
     public function create(
         string $title,
         string $author,
-        int $category, // ZMĚNA DLE UČITELE: Očekáváme INT (číslo)
-        int $subcategory, // ZMĚNA: Subcategory je také INT
+        int $category, 
+        int $subcategory, 
         int $year,
         float $price,
         string $isbn,
@@ -41,13 +41,13 @@ class Book {
         ]);
     }
 
-    // Získání všech knih z databáze (Nyní včetně názvu kategorie)
+    // Získání všech knih z databáze (Včetně názvů kategorií a podkategorií)
     public function getAll() {
-        
-        // 💡 ZMĚNA: Místo "SELECT *" použijeme přesnější dotaz s JOINem
-        $sql = "SELECT books.*, categories.name AS category_name 
+        // PŘIDÁNO: Načtení subcategory_name a druhý LEFT JOIN
+        $sql = "SELECT books.*, categories.name AS category_name, subcategories.name AS subcategory_name 
                 FROM books 
                 LEFT JOIN categories ON books.category = categories.id 
+                LEFT JOIN subcategories ON books.subcategory = subcategories.id
                 ORDER BY books.id DESC";
                 
         $stmt = $this->db->prepare($sql);
@@ -58,7 +58,13 @@ class Book {
 
     // Získání jedné konkrétní knihy podle jejího ID
     public function getById($id) {
-        $sql = "SELECT * FROM books WHERE id = :id";
+        // PŘIDÁNO: Načtení subcategory_name a oba JOINy (aby detail knihy uměl přeložit ID na text)
+        $sql = "SELECT books.*, categories.name AS category_name, subcategories.name AS subcategory_name 
+                FROM books 
+                LEFT JOIN categories ON books.category = categories.id 
+                LEFT JOIN subcategories ON books.subcategory = subcategories.id
+                WHERE books.id = :id";
+                
         $stmt = $this->db->prepare($sql);
         $stmt->execute([':id' => $id]);
         

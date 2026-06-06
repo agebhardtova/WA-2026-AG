@@ -91,6 +91,9 @@ class AuthController {
                 // ÚSPĚCH: Uložíme si důležitá data do Session
                 $_SESSION['user_id'] = $user['id'];
                 
+                // ZMĚNA: Uložíme do Session i informaci o tom, zda je uživatel admin
+                $_SESSION['is_admin'] = $user['is_admin']; 
+                
                 // Uložíme si jméno pro uvítání (přezdívku, nebo uživatelské jméno)
                 $_SESSION['user_name'] = !empty($user['nickname']) ? $user['nickname'] : $user['username'];
 

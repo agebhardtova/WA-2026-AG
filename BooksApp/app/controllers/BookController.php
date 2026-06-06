@@ -78,7 +78,6 @@ class BookController {
             $author = htmlspecialchars($_POST['author'] ?? '');
             $isbn = htmlspecialchars($_POST['isbn'] ?? '');
             
-            // Shodné s učitelem: přetypování na INT
             $category = (int)($_POST['category'] ?? 0);
             $subcategory = (int)($_POST['subcategory'] ?? 0);
             
@@ -145,8 +144,12 @@ class BookController {
             exit;
         }
 
-        if ($book['created_by'] !== $_SESSION['user_id']) {
-            $this->addErrorMessage('Nemáte oprávnění smazat tuto knihu, protože nejste jejím autorem.');
+        // 💡 ZMĚNA: Zjistíme, zda je přihlášený uživatel admin
+        $isAdmin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1;
+
+        // 🛡️ ZMĚNA: Vyhodíme uživatele POKUD NENÍ autor A ZÁROVEŇ NENÍ admin
+        if ($book['created_by'] !== $_SESSION['user_id'] && !$isAdmin) {
+            $this->addErrorMessage('Nemáte oprávnění smazat tuto knihu.');
             header('Location: ' . BASE_URL . '/index.php');
             exit;
         }
@@ -193,8 +196,12 @@ class BookController {
             exit;
         }
 
-        if ($book['created_by'] !== $_SESSION['user_id']) {
-            $this->addErrorMessage('Nemáte oprávnění upravovat tuto knihu, protože nejste jejím autorem.');
+        // 💡 ZMĚNA: Zjistíme, zda je přihlášený uživatel admin
+        $isAdmin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1;
+
+        // 🛡️ ZMĚNA: Vyhodíme uživatele POKUD NENÍ autor A ZÁROVEŇ NENÍ admin
+        if ($book['created_by'] !== $_SESSION['user_id'] && !$isAdmin) {
+            $this->addErrorMessage('Nemáte oprávnění upravovat tuto knihu.');
             header('Location: ' . BASE_URL . '/index.php');
             exit;
         }
@@ -234,8 +241,12 @@ class BookController {
 
             $book = $bookModel->getById($id);
 
-            if (!$book || $book['created_by'] !== $_SESSION['user_id']) {
-                $this->addErrorMessage('Nemáte oprávnění ukládat změny u této knihy, protože nejste jejím autorem.');
+            // 💡 ZMĚNA: Zjistíme, zda je přihlášený uživatel admin
+            $isAdmin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1;
+
+            // 🛡️ ZMĚNA: Vyhodíme uživatele POKUD NENÍ autor A ZÁROVEŇ NENÍ admin (nebo pokud kniha neexistuje)
+            if (!$book || ($book['created_by'] !== $_SESSION['user_id'] && !$isAdmin)) {
+                $this->addErrorMessage('Nemáte oprávnění ukládat změny u této knihy.');
                 header('Location: ' . BASE_URL . '/index.php');
                 exit;
             }
@@ -244,7 +255,6 @@ class BookController {
             $author = htmlspecialchars($_POST['author'] ?? '');
             $isbn = htmlspecialchars($_POST['isbn'] ?? '');
             
-            // Shodné s učitelem: přetypování na INT
             $category = (int)($_POST['category'] ?? 0);
             $subcategory = (int)($_POST['subcategory'] ?? 0);
             

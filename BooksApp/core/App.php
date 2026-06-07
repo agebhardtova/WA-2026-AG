@@ -1,9 +1,9 @@
 <?php
 
 class App {
-    // Výchozí nastavení, pokud uživatel přijde na hlavní stránku bez parametrů v URL
-    protected $controller = 'BookController';
-    protected $method = 'index'; // Výchozí metoda typicky zobrazuje seznam (např. seznam alb)
+    // Výchozí nastavení: nyní používáme AlbumController místo BookController
+    protected $controller = 'AlbumController';
+    protected $method = 'index'; 
     protected $params = [];
 
     public function __construct() {
@@ -11,7 +11,7 @@ class App {
         $url = $this->parseUrl();
 
         // 1. KONTROLER: Existuje pro první část URL příslušný soubor?
-        // Příklad: Pokud je URL "book/create", hledá se "BookController.php"
+        // Příklad: Pokud je URL "album/create", hledá se "AlbumController.php"
         if (isset($url[0]) && file_exists('../app/controllers/' . ucfirst($url[0]) . 'Controller.php')) {
             $this->controller = ucfirst($url[0]) . 'Controller';
             unset($url[0]); // Odstranění použité části z pole
@@ -22,7 +22,6 @@ class App {
         $this->controller = new $this->controller;
 
         // 2. METODA: Existuje pro druhou část URL funkce uvnitř kontroleru?
-        // Příklad: Pokud je URL "book/create", hledá se funkce "create()" uvnitř BookControlleru
         if (isset($url[1])) {
             if (method_exists($this->controller, $url[1])) {
                 $this->method = $url[1];

@@ -6,10 +6,10 @@
         <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Dostupné alba</h2>
     </div>
     
-    <?php if (empty($books)): ?>
+    <?php if (empty($albums)): ?>
         <div class="bg-white rounded-lg shadow-sm border border-slate-300 p-10 text-center">
-            <p class="text-slate-500 text-lg">V databázi se zatím nenachází žádné alba.</p>
-            <a href="<?= BASE_URL ?>/index.php?url=book/create" class="inline-block mt-4 text-slate-600 hover:text-black font-bold underline transition-colors">
+            <p class="text-slate-500 text-lg">V databázi se zatím nenachází žádné album.</p>
+            <a href="<?= BASE_URL ?>/index.php?url=album/create" class="inline-block mt-4 text-slate-600 hover:text-black font-bold underline transition-colors">
                 + Přidat první album
             </a>
         </div>
@@ -29,30 +29,28 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-200 text-sm">
-                        <?php foreach ($books as $book): ?>
+                        <?php foreach ($albums as $album): ?>
                             <tr class="hover:bg-slate-50 transition-colors group">
-                                <td class="px-6 py-4 text-slate-400 font-medium">#<?= htmlspecialchars($book['id']) ?></td>
-                                <td class="px-6 py-4 font-bold text-slate-900"><?= htmlspecialchars($book['title']) ?></td>
-                                <td class="px-6 py-4 text-slate-600"><?= htmlspecialchars($book['author']) ?></td>
-                                <td class="px-6 py-4 text-emerald-400 font-medium">
-                                    <?= htmlspecialchars($book['category_name'] ?? 'Nezařazeno') ?>
+                                <td class="px-6 py-4 text-slate-400 font-medium">#<?= htmlspecialchars($album['id']) ?></td>
+                                <td class="px-6 py-4 font-bold text-slate-900"><?= htmlspecialchars($album['title']) ?></td>
+                                <td class="px-6 py-4 text-slate-600"><?= htmlspecialchars($album['author']) ?></td>
+                                <td class="px-6 py-4 text-emerald-600 font-medium">
+                                    <?= htmlspecialchars($album['category_name'] ?? 'Nezařazeno') ?>
                                 </td>
 
-                                <td class="px-6 py-4 text-slate-600"><?= htmlspecialchars($book['year']) ?></td>
-                                <td class="px-6 py-4 text-slate-900 font-semibold"><?= htmlspecialchars($book['price']) ?> Kč</td>
+                                <td class="px-6 py-4 text-slate-600"><?= htmlspecialchars($album['year']) ?></td>
+                                <td class="px-6 py-4 text-slate-900 font-semibold"><?= htmlspecialchars($album['price']) ?> Kč</td>
                                 
                                 <td class="px-6 py-4 text-right space-x-3">
-                                    <a href="<?= BASE_URL ?>/index.php?url=book/show/<?= $book['id'] ?>" class="text-slate-400 hover:text-black font-semibold transition-colors">Detail</a>
+                                    <a href="<?= BASE_URL ?>/index.php?url=album/show/<?= $album['id'] ?>" class="text-slate-400 hover:text-black font-semibold transition-colors">Detail</a>
                                     
                                     <?php 
-                                    // 💡 ZMĚNA: Kontrola administrátora pro frontend
                                     $isAdmin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1;
                                     
-                                    // Tlačítka zobrazíme POKUD je autor NEBO je admin
-                                    if (isset($_SESSION['user_id']) && ($_SESSION['user_id'] === $book['created_by'] || $isAdmin)): 
+                                    if (isset($_SESSION['user_id']) && ($_SESSION['user_id'] == $album['created_by'] || $isAdmin)): 
                                     ?>
-                                        <a href="<?= BASE_URL ?>/index.php?url=book/edit/<?= $book['id'] ?>" class="text-slate-400 hover:text-black font-semibold transition-colors">Upravit</a>
-                                        <a href="<?= BASE_URL ?>/index.php?url=book/delete/<?= $book['id'] ?>" onclick="return confirm('Opravdu chcete album smazat?')" class="text-slate-800 hover:text-black font-bold underline transition-colors">Smazat</a>
+                                        <a href="<?= BASE_URL ?>/index.php?url=album/edit/<?= $album['id'] ?>" class="text-slate-400 hover:text-black font-semibold transition-colors">Upravit</a>
+                                        <a href="<?= BASE_URL ?>/index.php?url=album/delete/<?= $album['id'] ?>" onclick="return confirm('Opravdu chcete album smazat?')" class="text-slate-800 hover:text-black font-bold underline transition-colors">Smazat</a>
                                     <?php endif; ?>
 
                                 </td>

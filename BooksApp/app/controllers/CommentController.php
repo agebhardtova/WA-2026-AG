@@ -17,19 +17,19 @@ class CommentController {
             $db = (new Database())->getConnection();
             $commentModel = new Comment($db);
 
-            $bookId = (int)$_POST['book_id'];
+            $albumId = (int)$_POST['album_id']; // Opraveno z book_id na album_id
             $content = htmlspecialchars($_POST['content'] ?? '');
             $userId = $_SESSION['user_id'];
 
             if (!empty($content)) {
-                $commentModel->create($bookId, $userId, $content);
+                $commentModel->create($albumId, $userId, $content);
                 $_SESSION['messages']['success'][] = 'Komentář byl úspěšně přidán.';
             } else {
                 $_SESSION['messages']['error'][] = 'Komentář nemůže být prázdný.';
             }
 
             // Přesměrování zpět na detail alba
-            header('Location: ' . BASE_URL . '/index.php?url=book/show/' . $bookId);
+            header('Location: ' . BASE_URL . '/index.php?url=album/show/' . $albumId);
             exit;
         }
     }
@@ -54,7 +54,7 @@ class CommentController {
             exit;
         }
 
-        $bookId = $comment['book_id'];
+        $albumId = $comment['album_id']; // Opraveno z book_id na album_id
         $isAdmin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1;
 
         // Kontrola: Je to můj komentář NEBO jsem admin?
@@ -65,7 +65,7 @@ class CommentController {
             $_SESSION['messages']['error'][] = 'Nemáte oprávnění smazat tento komentář.';
         }
 
-        header('Location: ' . BASE_URL . '/index.php?url=book/show/' . $bookId);
+        header('Location: ' . BASE_URL . '/index.php?url=album/show/' . $albumId);
         exit;
     }
 }

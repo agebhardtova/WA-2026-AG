@@ -9,7 +9,7 @@
     
     <div class="bg-slate-800/50 border border-slate-700 rounded-xl overflow-hidden shadow-2xl backdrop-blur-sm p-8">
         
-        <form action="<?= BASE_URL ?>/index.php?url=book/store" method="post" enctype="multipart/form-data" class="space-y-6">
+        <form action="<?= BASE_URL ?>/index.php?url=album/store" method="post" enctype="multipart/form-data" class="space-y-6">
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>

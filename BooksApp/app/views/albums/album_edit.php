@@ -10,48 +10,47 @@
 
     <div class="mb-6">
         <h2 class="text-3xl font-light tracking-widest text-slate-400 uppercase">Upravit album</h2>
-        <p>Debug hodnocení: <?= $book['rating'] ?? 'není nastaveno' ?></p>
-        <p class="text-slate-500 mt-2">Změňte požadované údaje pro album: <strong class="text-slate-300"><?= htmlspecialchars($book['title']) ?></strong></p>
+        <p>Debug hodnocení: <?= $album['rating'] ?? 'není nastaveno' ?></p>
+        <p class="text-slate-500 mt-2">Změňte požadované údaje pro album: <strong class="text-slate-300"><?= htmlspecialchars($album['title']) ?></strong></p>
     </div>
     
     <div class="bg-slate-800/50 border border-slate-700 rounded-xl overflow-hidden shadow-2xl backdrop-blur-sm p-8">
         
-        <form action="<?= BASE_URL ?>/index.php?url=book/update/<?= htmlspecialchars($book['id']) ?>" method="post" enctype="multipart/form-data" class="space-y-6">
+        <form action="<?= BASE_URL ?>/index.php?url=album/update/<?= htmlspecialchars($album['id']) ?>" method="post" enctype="multipart/form-data" class="space-y-6">
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                     <label for="id_display" class="block text-sm font-medium text-slate-400 mb-1">ID v databázi</label>
-                    <input type="text" id="id_display" value="<?= htmlspecialchars($book['id']) ?>" readonly class="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-4 py-2 text-slate-500 cursor-not-allowed">
+                    <input type="text" id="id_display" value="<?= htmlspecialchars($album['id']) ?>" readonly class="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-4 py-2 text-slate-500 cursor-not-allowed">
                 </div>
                 
                 <div>
                     <label for="title" class="block text-sm font-medium text-slate-300 mb-1">Název alba <span class="text-rose-500">*</span></label>
-                    <input type="text" id="title" name="title" value="<?= htmlspecialchars($book['title']) ?>" required class="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-blue-500">
+                    <input type="text" id="title" name="title" value="<?= htmlspecialchars($album['title']) ?>" required class="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-blue-500">
                 </div>
                 
                 <div>
                     <label for="author" class="block text-sm font-medium text-slate-300 mb-1">Autor <span class="text-rose-500">*</span></label>
-                    <input type="text" id="author" name="author" value="<?= htmlspecialchars($book['author']) ?>" required class="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-blue-500">
+                    <input type="text" id="author" name="author" value="<?= htmlspecialchars($album['author']) ?>" required class="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-blue-500">
                 </div>
                 
                 <div>
                     <label for="isbn" class="block text-sm font-medium text-slate-300 mb-1">ISBN</label>
-                    <input type="text" id="isbn" name="isbn" value="<?= htmlspecialchars($book['isbn'] ?? '') ?>" class="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-blue-500">
+                    <input type="text" id="isbn" name="isbn" value="<?= htmlspecialchars($album['isbn'] ?? '') ?>" class="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-blue-500">
                 </div>
 
                 <div>
                     <label for="year" class="block text-sm font-medium text-slate-300 mb-1">Rok vydání <span class="text-rose-500">*</span></label>
-                    <input type="number" id="year" name="year" value="<?= htmlspecialchars($book['year']) ?>" required class="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-blue-500">
+                    <input type="number" id="year" name="year" value="<?= htmlspecialchars($album['year']) ?>" required class="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-blue-500">
                 </div>
 
-                <!-- Kategorie (Editační roletka s předvybranou hodnotou) -->
                 <div>
                      <label for="category" class="block text-sm font-medium text-slate-300 mb-1">Kategorie <span class="text-rose-500">*</span></label>
                      <select id="category" name="category" required class="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-blue-500">
                         <option value="">-- Vyberte kategorii --</option>
                         <?php if (!empty($categories)): ?>
                             <?php foreach ($categories as $cat): ?>
-                                <?php $isSelected = (isset($book['category']) && $book['category'] == $cat['id']) ? 'selected' : ''; ?>
+                                <?php $isSelected = (isset($album['category']) && $album['category'] == $cat['id']) ? 'selected' : ''; ?>
                                 <option value="<?= htmlspecialchars($cat['id']) ?>" <?= $isSelected ?>>
                                     <?= htmlspecialchars($cat['name']) ?>
                                 </option>
@@ -60,14 +59,13 @@
                     </select>
                 </div>
                 
-                <!-- Podkategorie (Editační roletka s předvybranou hodnotou) -->
                 <div>
                     <label for="subcategory" class="block text-sm font-medium text-slate-300 mb-1">Podkategorie</label>
                     <select id="subcategory" name="subcategory" class="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-blue-500">
                         <option value="">-- Vyberte podkategorii --</option>
                         <?php if (!empty($subcategories)): ?>
                             <?php foreach ($subcategories as $subcat): ?>
-                                <?php $isSelected = (isset($book['subcategory']) && $book['subcategory'] == $subcat['id']) ? 'selected' : ''; ?>
+                                <?php $isSelected = (isset($album['subcategory']) && $album['subcategory'] == $subcat['id']) ? 'selected' : ''; ?>
                                 <option value="<?= htmlspecialchars($subcat['id']) ?>" <?= $isSelected ?>>
                                     <?= htmlspecialchars($subcat['name']) ?>
                                 </option>
@@ -78,24 +76,25 @@
                 
                 <div>
                     <label for="price" class="block text-sm font-medium text-slate-300 mb-1">Cena alba (Kč)</label>
-                    <input type="number" id="price" name="price" step="0.5" value="<?= htmlspecialchars($book['price'] ?? '') ?>" class="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-blue-500">
+                    <input type="number" id="price" name="price" step="0.5" value="<?= htmlspecialchars($album['price'] ?? '') ?>" class="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-blue-500">
                 </div>
 
                 <div class="md:col-span-2">
                     <label for="link" class="block text-sm font-medium text-slate-300 mb-1">Odkaz / Zdroj</label>
-                    <input type="text" id="link" name="link" value="<?= htmlspecialchars($book['link'] ?? '') ?>" class="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-blue-500">
+                    <input type="text" id="link" name="link" value="<?= htmlspecialchars($album['link'] ?? '') ?>" class="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-blue-500">
                 </div>
             </div>
 
             <div>
                 <label for="description" class="block text-sm font-medium text-slate-300 mb-1">Popis alba</label>
-                <textarea id="description" name="description" rows="4" class="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-blue-500"><?= htmlspecialchars($book['description'] ?? '') ?></textarea>
+                <textarea id="description" name="description" rows="4" class="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-blue-500"><?= htmlspecialchars($album['description'] ?? '') ?></textarea>
             </div>
-             <div>
+            
+            <div>
                 <label class="block text-sm font-medium text-slate-300 mb-1">Hodnocení (0-5 hvězdiček)</label>
                 <select name="rating" class="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-2 text-slate-200">
                 <?php for($i=0; $i<=5; $i++): ?>
-                <option value="<?= $i ?>" <?= (isset($book['rating']) && $book['rating'] == $i) ? 'selected' : '' ?>>
+                <option value="<?= $i ?>" <?= (isset($album['rating']) && $album['rating'] == $i) ? 'selected' : '' ?>>
                     <?= $i ?> hvězdiček
                 </option>
                 <?php endfor; ?>
@@ -103,7 +102,7 @@
             </div>  
             
             <?php 
-                $existingImages = json_decode($book['images'] ?? '[]', true); 
+                $existingImages = json_decode($album['images'] ?? '[]', true); 
                 if (!empty($existingImages) && is_array($existingImages)): 
             ?>
             <div class="md:col-span-2 bg-slate-900/50 p-5 rounded-lg border border-slate-700 mb-2">
@@ -115,7 +114,6 @@
                         </div>
                     <?php endforeach; ?>
                 </div>
-                <p class="text-xs text-emerald-500/80 mt-3 font-medium">Pokud níže nahrajete nové soubory, tento původní se nahradí.</p>
             </div>
             <?php endif; ?>
             
@@ -149,21 +147,6 @@
 
     fileInput.addEventListener('change', function(event) {
         const files = event.target.files;
-        
         if (files.length === 0) {
             fileTitle.textContent = 'Klikněte pro výběr souborů';
-            fileTitle.className = 'text-sm text-slate-400 font-semibold';
-            fileInfo.textContent = 'Žádné soubory nebyly vybrány';
-        } else if (files.length === 1) {
-            fileTitle.textContent = 'Soubor připraven';
-            fileTitle.className = 'text-sm text-emerald-400 font-bold';
-            fileInfo.textContent = files[0].name;
-        } else {
-            fileTitle.textContent = 'Soubory připraveny';
-            fileTitle.className = 'text-sm text-emerald-400 font-bold';
-            fileInfo.textContent = 'Vybráno celkem: ' + files.length + ' souborů';
-        }
-    });
-</script>
-
-<?php require_once '../app/views/layout/footer.php'; ?>
+            fileInfo

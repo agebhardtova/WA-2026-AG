@@ -1,6 +1,6 @@
 <?php
 
-class Book {
+class Album {
     private PDO $db;
 
     public function __construct(PDO $db) {
@@ -22,7 +22,7 @@ class Book {
         int $rating 
     ): bool {
         
-        $sql = "INSERT INTO books (title, author, category, subcategory, year, price, isbn, description, link, images, created_by, rating)
+        $sql = "INSERT INTO albums (title, author, category, subcategory, year, price, isbn, description, link, images, created_by, rating)
                 VALUES (:title, :author, :category, :subcategory, :year, :price, :isbn, :description, :link, :images, :created_by, :rating)";
         
         $stmt = $this->db->prepare($sql);
@@ -44,11 +44,11 @@ class Book {
     }
 
     public function getAll() {
-        $sql = "SELECT books.*, categories.name AS category_name, subcategories.name AS subcategory_name 
-                FROM books 
-                LEFT JOIN categories ON books.category = categories.id 
-                LEFT JOIN subcategories ON books.subcategory = subcategories.id
-                ORDER BY books.id DESC";
+        $sql = "SELECT albums.*, categories.name AS category_name, subcategories.name AS subcategory_name 
+                FROM albums 
+                LEFT JOIN categories ON albums.category = categories.id 
+                LEFT JOIN subcategories ON albums.subcategory = subcategories.id
+                ORDER BY albums.id DESC";
                 
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
@@ -57,11 +57,11 @@ class Book {
     }
 
     public function getById($id) {
-        $sql = "SELECT books.*, categories.name AS category_name, subcategories.name AS subcategory_name 
-                FROM books 
-                LEFT JOIN categories ON books.category = categories.id 
-                LEFT JOIN subcategories ON books.subcategory = subcategories.id
-                WHERE books.id = :id";
+        $sql = "SELECT albums.*, categories.name AS category_name, subcategories.name AS subcategory_name 
+                FROM albums 
+                LEFT JOIN categories ON albums.category = categories.id 
+                LEFT JOIN subcategories ON albums.subcategory = subcategories.id
+                WHERE albums.id = :id";
                 
         $stmt = $this->db->prepare($sql);
         $stmt->execute([':id' => $id]);
@@ -75,7 +75,7 @@ class Book {
         $userId = null,
         $rating = 0
     ) {
-        $sql = "UPDATE books 
+        $sql = "UPDATE albums 
                 SET title = :title, 
                     author = :author, 
                     category = :category, 
@@ -110,7 +110,7 @@ class Book {
     }
 
     public function delete($id) {
-        $sql = "DELETE FROM books WHERE id = :id";
+        $sql = "DELETE FROM albums WHERE id = :id";
         $stmt = $this->db->prepare($sql);
         
         return $stmt->execute([':id' => $id]);

@@ -121,7 +121,7 @@ class AuthController {
         exit;
     }
 
-    // --- Pomocné metody pro notifikace (stejné jako v BookControlleru) ---
+    // --- Pomocné metody pro notifikace (stejné jako v AlbumControlleru) ---
     protected function addSuccessMessage($message) {
         $_SESSION['messages']['success'][] = $message;
     }

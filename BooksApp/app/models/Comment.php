@@ -7,35 +7,27 @@ class Comment {
         $this->db = $db;    
     }
 
-    // Načtení všech komentářů k jednomu albu (včetně jména autora)
-    public function getByBookId($bookId) {
+    // Načtení všech komentářů k jednomu albu
+    public function getByAlbumId($albumId) {
         $sql = "SELECT comments.*, users.username, users.first_name, users.last_name 
                 FROM comments 
                 JOIN users ON comments.user_id = users.id 
-                WHERE comments.book_id = :book_id 
+                WHERE comments.album_id = :album_id 
                 ORDER BY comments.created_at DESC";
         $stmt = $this->db->prepare($sql);
-        $stmt->execute([':book_id' => $bookId]);
+        $stmt->execute([':album_id' => $albumId]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     // Přidání nového komentáře
-    public function create($bookId, $userId, $content) {
-        $sql = "INSERT INTO comments (book_id, user_id, content) VALUES (:book_id, :user_id, :content)";
+    public function create($albumId, $userId, $content) {
+        $sql = "INSERT INTO comments (album_id, user_id, content) VALUES (:album_id, :user_id, :content)";
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([
-            ':book_id' => $bookId,
+            ':album_id' => $albumId,
             ':user_id' => $userId,
             ':content' => $content
         ]);
-    }
-
-    // Získání jednoho komentáře podle ID (pro ověření práv při mazání)
-    public function getById($id) {
-        $sql = "SELECT * FROM comments WHERE id = :id";
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute([':id' => $id]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     // Smazání komentáře

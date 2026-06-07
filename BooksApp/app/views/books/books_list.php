@@ -3,14 +3,14 @@
 <main class="max-w-6xl mx-auto px-4 py-8 flex-grow w-full">
     
     <div class="flex justify-between items-end mb-6">
-        <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Dostupné knihy</h2>
+        <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Dostupné alba</h2>
     </div>
     
     <?php if (empty($books)): ?>
         <div class="bg-white rounded-lg shadow-sm border border-slate-300 p-10 text-center">
-            <p class="text-slate-500 text-lg">V databázi se zatím nenachází žádné knihy.</p>
+            <p class="text-slate-500 text-lg">V databázi se zatím nenachází žádné alba.</p>
             <a href="<?= BASE_URL ?>/index.php?url=book/create" class="inline-block mt-4 text-slate-600 hover:text-black font-bold underline transition-colors">
-                + Přidat první knihu
+                + Přidat první album
             </a>
         </div>
     <?php else: ?>
@@ -20,7 +20,7 @@
                     <thead>
                         <tr class="bg-slate-100 border-b-2 border-slate-800 text-slate-700 text-xs uppercase tracking-wider">
                             <th class="px-6 py-4 font-bold">ID</th>
-                            <th class="px-6 py-4 font-bold">Název knihy</th>
+                            <th class="px-6 py-4 font-bold">Název alba</th>
                             <th class="px-6 py-4 font-bold">Autor</th>
                             <th class="px-6 py-4 font-bold">Kategorie</th>
                             <th class="px-6 py-4 font-bold">Rok</th>
@@ -52,7 +52,7 @@
                                     if (isset($_SESSION['user_id']) && ($_SESSION['user_id'] === $book['created_by'] || $isAdmin)): 
                                     ?>
                                         <a href="<?= BASE_URL ?>/index.php?url=book/edit/<?= $book['id'] ?>" class="text-slate-400 hover:text-black font-semibold transition-colors">Upravit</a>
-                                        <a href="<?= BASE_URL ?>/index.php?url=book/delete/<?= $book['id'] ?>" onclick="return confirm('Opravdu chcete knihu smazat?')" class="text-slate-800 hover:text-black font-bold underline transition-colors">Smazat</a>
+                                        <a href="<?= BASE_URL ?>/index.php?url=book/delete/<?= $book['id'] ?>" onclick="return confirm('Opravdu chcete album smazat?')" class="text-slate-800 hover:text-black font-bold underline transition-colors">Smazat</a>
                                     <?php endif; ?>
 
                                 </td>

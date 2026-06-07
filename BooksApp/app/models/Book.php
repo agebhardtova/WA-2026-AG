@@ -18,11 +18,12 @@ class Book {
         string $description,
         string $link,
         array $images,
-        int $userId 
+        int $userId,
+        int $rating 
     ): bool {
         
-        $sql = "INSERT INTO books (title, author, category, subcategory, year, price, isbn, description, link, images, created_by)
-                VALUES (:title, :author, :category, :subcategory, :year, :price, :isbn, :description, :link, :images, :created_by)";
+        $sql = "INSERT INTO books (title, author, category, subcategory, year, price, isbn, description, link, images, created_by, rating)
+                VALUES (:title, :author, :category, :subcategory, :year, :price, :isbn, :description, :link, :images, :created_by, :rating)";
         
         $stmt = $this->db->prepare($sql);
 
@@ -37,13 +38,12 @@ class Book {
             ':description' => $description,
             ':link' => $link,
             ':images' => json_encode($images),
-            ':created_by' => $userId 
+            ':created_by' => $userId,
+            ':rating' => $rating
         ]);
     }
 
-    // Získání všech knih z databáze (Včetně názvů kategorií a podkategorií)
     public function getAll() {
-        // PŘIDÁNO: Načtení subcategory_name a druhý LEFT JOIN
         $sql = "SELECT books.*, categories.name AS category_name, subcategories.name AS subcategory_name 
                 FROM books 
                 LEFT JOIN categories ON books.category = categories.id 
@@ -56,9 +56,7 @@ class Book {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // Získání jedné konkrétní knihy podle jejího ID
     public function getById($id) {
-        // PŘIDÁNO: Načtení subcategory_name a oba JOINy (aby detail knihy uměl přeložit ID na text)
         $sql = "SELECT books.*, categories.name AS category_name, subcategories.name AS subcategory_name 
                 FROM books 
                 LEFT JOIN categories ON books.category = categories.id 
@@ -74,7 +72,8 @@ class Book {
     public function update(
         $id, $title, $author, $category, $subcategory, 
         $year, $price, $isbn, $description, $link, $images = [], 
-        $userId = null 
+        $userId = null,
+        $rating = 0
     ) {
         $sql = "UPDATE books 
                 SET title = :title, 
@@ -87,7 +86,8 @@ class Book {
                     description = :description, 
                     link = :link, 
                     images = :images,
-                    updated_by = :updated_by
+                    updated_by = :updated_by,
+                    rating = :rating
                 WHERE id = :id";
                 
         $stmt = $this->db->prepare($sql);
@@ -104,7 +104,8 @@ class Book {
             ':description' => $description,
             ':link' => $link,
             ':images' => json_encode($images),
-            ':updated_by' => $userId 
+            ':updated_by' => $userId,
+            ':rating' => $rating
         ]);
     }
 

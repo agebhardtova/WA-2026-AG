@@ -4,7 +4,7 @@
     <div class="w-full max-w-md">
         <div class="mb-6 text-center">
             <h2 class="text-3xl font-light tracking-widest text-slate-300 uppercase">Přihlášení</h2>
-            <p class="text-slate-500 italic mt-2 text-sm">Vítejte zpět v naší Knihovně.</p>
+            <p class="text-slate-500 italic mt-2 text-sm">Vítejte zpět v naší albovně.</p>
         </div>
         
         <div class="bg-slate-800/50 border border-slate-700 rounded-xl shadow-2xl backdrop-blur-sm p-6 md:p-8">

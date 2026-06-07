@@ -4,13 +4,14 @@
     
     <div class="mb-4">
         <a href="<?= BASE_URL ?>/index.php" class="text-blue-400 hover:text-blue-300 flex items-center text-sm font-medium transition-colors">
-            &larr; Zpět na seznam knih
+            &larr; Zpět na seznam alb
         </a>
     </div>
 
     <div class="mb-6">
-        <h2 class="text-3xl font-light tracking-widest text-slate-400 uppercase">Upravit knihu</h2>
-        <p class="text-slate-500 mt-2">Změňte požadované údaje pro knihu: <strong class="text-slate-300"><?= htmlspecialchars($book['title']) ?></strong></p>
+        <h2 class="text-3xl font-light tracking-widest text-slate-400 uppercase">Upravit album</h2>
+        <p>Debug hodnocení: <?= $book['rating'] ?? 'není nastaveno' ?></p>
+        <p class="text-slate-500 mt-2">Změňte požadované údaje pro album: <strong class="text-slate-300"><?= htmlspecialchars($book['title']) ?></strong></p>
     </div>
     
     <div class="bg-slate-800/50 border border-slate-700 rounded-xl overflow-hidden shadow-2xl backdrop-blur-sm p-8">
@@ -24,7 +25,7 @@
                 </div>
                 
                 <div>
-                    <label for="title" class="block text-sm font-medium text-slate-300 mb-1">Název knihy <span class="text-rose-500">*</span></label>
+                    <label for="title" class="block text-sm font-medium text-slate-300 mb-1">Název alba <span class="text-rose-500">*</span></label>
                     <input type="text" id="title" name="title" value="<?= htmlspecialchars($book['title']) ?>" required class="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-blue-500">
                 </div>
                 
@@ -76,7 +77,7 @@
                 </div>
                 
                 <div>
-                    <label for="price" class="block text-sm font-medium text-slate-300 mb-1">Cena knihy (Kč)</label>
+                    <label for="price" class="block text-sm font-medium text-slate-300 mb-1">Cena alba (Kč)</label>
                     <input type="number" id="price" name="price" step="0.5" value="<?= htmlspecialchars($book['price'] ?? '') ?>" class="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-blue-500">
                 </div>
 
@@ -87,9 +88,19 @@
             </div>
 
             <div>
-                <label for="description" class="block text-sm font-medium text-slate-300 mb-1">Popis knihy</label>
+                <label for="description" class="block text-sm font-medium text-slate-300 mb-1">Popis alba</label>
                 <textarea id="description" name="description" rows="4" class="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-blue-500"><?= htmlspecialchars($book['description'] ?? '') ?></textarea>
-            </div>    
+            </div>
+             <div>
+                <label class="block text-sm font-medium text-slate-300 mb-1">Hodnocení (0-5 hvězdiček)</label>
+                <select name="rating" class="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-2 text-slate-200">
+                <?php for($i=0; $i<=5; $i++): ?>
+                <option value="<?= $i ?>" <?= (isset($book['rating']) && $book['rating'] == $i) ? 'selected' : '' ?>>
+                    <?= $i ?> hvězdiček
+                </option>
+                <?php endfor; ?>
+            </select>
+            </div>  
             
             <?php 
                 $existingImages = json_decode($book['images'] ?? '[]', true); 
@@ -109,7 +120,7 @@
             <?php endif; ?>
             
             <div class="md:col-span-2">
-                <label class="block text-xs font-semibold text-slate-400 mb-2 uppercase tracking-wider">Obrázky knihy</label>
+                <label class="block text-xs font-semibold text-slate-400 mb-2 uppercase tracking-wider">Obrázky alba</label>
                 <div class="w-full">
                     <label for="images" class="flex flex-col items-center justify-center w-full h-24 border-2 border-slate-600 border-dashed rounded-lg cursor-pointer bg-slate-800/30 hover:bg-slate-700/50 hover:border-emerald-400 transition-colors">
                         <div class="flex flex-col items-center justify-center pt-5 pb-6">

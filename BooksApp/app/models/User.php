@@ -56,6 +56,36 @@ class User {
         $stmt = $this->db->prepare($sql);
         $stmt->execute([':id' => $id]);
         
+        // TADY CHYBĚLO UZAVŘENÍ FUNKCE FINDBYID
         return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    // 4. Úprava profilu (včetně nových polí)
+    public function updateProfile($id, $username, $email, $firstName, $lastName, $nickname) {
+        $sql = "UPDATE users SET username = :username, email = :email, first_name = :first_name, last_name = :last_name, nickname = :nickname WHERE id = :id";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([
+            ':id' => $id,
+            ':username' => $username,
+            ':email' => $email,
+            ':first_name' => $firstName,
+            ':last_name' => $lastName,
+            ':nickname' => $nickname
+        ]);
+    }
+
+    // 5. Načtení všech uživatelů (pro seznam v administraci)
+    public function getAll() {
+        $sql = "SELECT id, username, email, first_name, last_name, is_admin, created_at FROM users ORDER BY created_at DESC";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // 6. Smazání uživatele (pro administrátora)
+    public function delete($id) {
+        $sql = "DELETE FROM users WHERE id = :id";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([':id' => $id]);
     }
 }

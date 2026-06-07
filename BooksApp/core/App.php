@@ -3,7 +3,7 @@
 class App {
     // Výchozí nastavení, pokud uživatel přijde na hlavní stránku bez parametrů v URL
     protected $controller = 'BookController';
-    protected $method = 'index'; // Výchozí metoda typicky zobrazuje seznam (např. seznam knih)
+    protected $method = 'index'; // Výchozí metoda typicky zobrazuje seznam (např. seznam alb)
     protected $params = [];
 
     public function __construct() {
@@ -30,7 +30,7 @@ class App {
             }
         }
 
-        // 3. PARAMETRY: Vše, co v URL zbylo, se bere jako parametry (např. ID knihy)
+        // 3. PARAMETRY: Vše, co v URL zbylo, se bere jako parametry (např. ID alba)
         $this->params = $url ? array_values($url) : [];
 
         // FINÁLE: Spuštění vybrané metody ve vybraném kontroleru a předání parametrů

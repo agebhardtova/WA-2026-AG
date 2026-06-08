@@ -19,8 +19,13 @@
 
                     <div>
                         <label for="password" class="block text-xs font-semibold text-slate-400 mb-1 uppercase tracking-wider">Heslo</label>
-                        <input type="password" id="password" name="password" required 
-                               class="w-full bg-slate-900/50 border border-slate-600 rounded-md px-4 py-2 text-slate-200 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-colors">
+                        <div class="relative">
+                            <input type="password" id="password" name="password" required 
+                                   class="w-full bg-slate-900/50 border border-slate-600 rounded-md px-4 py-2 text-slate-200 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-colors">
+                            <button type="button" onclick="togglePassword('password')" class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-white">
+                                👁️
+                            </button>
+                        </div>
                     </div>
 
                     <div class="pt-2">
@@ -38,5 +43,16 @@
         </div>
     </div>
 </main>
+
+<script>
+function togglePassword(fieldId) {
+    const field = document.getElementById(fieldId);
+    if (field.type === "password") {
+        field.type = "text";
+    } else {
+        field.type = "password";
+    }
+}
+</script>
 
 <?php require_once '../app/views/layout/footer.php'; ?>

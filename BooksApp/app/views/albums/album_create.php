@@ -17,12 +17,12 @@
                     <input type="text" id="title" name="title" required class="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-blue-500">
                 </div>
                 <div>
-                    <label for="author" class="block text-sm font-medium text-slate-300 mb-1">Autor <span class="text-rose-500">*</span></label>
-                    <input type="text" id="author" name="author" placeholder="Příjmení Jméno" required class="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-blue-500">
+                    <label for="interpret" class="block text-sm font-medium text-slate-300 mb-1">Interpret <span class="text-rose-500">*</span></label>
+                    <input type="text" id="interpret" name="interpret" placeholder="Např. Pink Floyd" required class="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-blue-500">
                 </div>
                 <div>
-                    <label for="isbn" class="block text-sm font-medium text-slate-300 mb-1">ISBN</label>
-                    <input type="text" id="isbn" name="isbn" class="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-blue-500">
+                    <label for="catalog_number" class="block text-sm font-medium text-slate-300 mb-1">Katalogové číslo</label>
+                    <input type="text" id="catalog_number" name="catalog_number" placeholder="Např. SUP 1113" class="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-blue-500">
                 </div>
                 <div>
                     <label for="year" class="block text-sm font-medium text-slate-300 mb-1">Rok vydání <span class="text-rose-500">*</span></label>

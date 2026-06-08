@@ -21,7 +21,7 @@
                         <tr class="bg-slate-100 border-b-2 border-slate-800 text-slate-700 text-xs uppercase tracking-wider">
                             <th class="px-6 py-4 font-bold">ID</th>
                             <th class="px-6 py-4 font-bold">Název alba</th>
-                            <th class="px-6 py-4 font-bold">Autor</th>
+                            <th class="px-6 py-4 font-bold">Interpret</th>
                             <th class="px-6 py-4 font-bold">Kategorie</th>
                             <th class="px-6 py-4 font-bold">Rok</th>
                             <th class="px-6 py-4 font-bold">Cena</th>
@@ -33,7 +33,7 @@
                             <tr class="hover:bg-slate-50 transition-colors group">
                                 <td class="px-6 py-4 text-slate-400 font-medium">#<?= htmlspecialchars($album['id']) ?></td>
                                 <td class="px-6 py-4 font-bold text-slate-900"><?= htmlspecialchars($album['title']) ?></td>
-                                <td class="px-6 py-4 text-slate-600"><?= htmlspecialchars($album['author']) ?></td>
+                                <td class="px-6 py-4 text-slate-600"><?= htmlspecialchars($album['interpret']) ?></td>
                                 <td class="px-6 py-4 text-emerald-600 font-medium">
                                     <?= htmlspecialchars($album['category_name'] ?? 'Nezařazeno') ?>
                                 </td>

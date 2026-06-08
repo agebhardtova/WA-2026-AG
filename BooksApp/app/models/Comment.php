@@ -7,7 +7,6 @@ class Comment {
         $this->db = $db;    
     }
 
-    // Načtení všech komentářů k jednomu albu
     public function getByAlbumId($albumId) {
         $sql = "SELECT comments.*, users.username, users.first_name, users.last_name 
                 FROM comments 
@@ -18,8 +17,15 @@ class Comment {
         $stmt->execute([':album_id' => $albumId]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    
+    // NOVÁ METODA: Načtení konkrétního komentáře (pro úpravu)
+    public function getById($id) {
+        $sql = "SELECT * FROM comments WHERE id = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([':id' => $id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 
-    // Přidání nového komentáře
     public function create($albumId, $userId, $content) {
         $sql = "INSERT INTO comments (album_id, user_id, content) VALUES (:album_id, :user_id, :content)";
         $stmt = $this->db->prepare($sql);
@@ -29,8 +35,17 @@ class Comment {
             ':content' => $content
         ]);
     }
+    
+    // NOVÁ METODA: Úprava existujícího komentáře
+    public function update($id, $content) {
+        $sql = "UPDATE comments SET content = :content WHERE id = :id";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([
+            ':id' => $id,
+            ':content' => $content
+        ]);
+    }
 
-    // Smazání komentáře
     public function delete($id) {
         $sql = "DELETE FROM comments WHERE id = :id";
         $stmt = $this->db->prepare($sql);

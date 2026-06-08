@@ -79,8 +79,11 @@
                         $style = $styles[$type] ?? 'bg-white border-slate-500 text-slate-700';
                     ?>
                     <?php foreach ($messages as $message): ?>
-                        <div class="<?= $style ?> border-l-4 p-4 rounded-r-lg shadow-sm animate-fade-in">
+                        <div class="<?= $style ?> border-l-4 p-4 pr-12 rounded-r-lg shadow-sm animate-fade-in relative flex items-center">
                             <p class="text-sm italic"><?= htmlspecialchars($message) ?></p>
+                            <button type="button" onclick="this.parentElement.style.display='none'" class="absolute right-0 top-0 bottom-0 px-4 text-2xl font-bold opacity-60 hover:opacity-100 transition-opacity cursor-pointer">
+                                &times;
+                            </button>
                         </div>
                     <?php endforeach; ?>
                 <?php endforeach; ?>

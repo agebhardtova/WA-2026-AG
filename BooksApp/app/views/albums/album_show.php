@@ -10,7 +10,7 @@
     <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden p-8">
         <div class="border-b border-slate-100 pb-6 mb-6">
             <h2 class="text-3xl font-bold text-slate-900 mb-2"><?= htmlspecialchars($album['title']) ?></h2>
-            <p class="text-xl text-cyan-600 font-medium"><?= htmlspecialchars($album['author']) ?></p>
+            <p class="text-xl text-cyan-600 font-medium"><?= htmlspecialchars($album['interpret']) ?></p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -34,8 +34,8 @@
 
             <div class="space-y-4">
                 <div>
-                    <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">ISBN</h3>
-                    <p class="text-slate-800"><?= htmlspecialchars($album['isbn'] ?? 'Neuvedeno') ?></p>
+                    <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Katalogové číslo</h3>
+                    <p class="text-slate-800"><?= htmlspecialchars($album['catalog_number'] ?? 'Neuvedeno') ?></p>
                 </div>
                 <div>
                     <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Odkaz</h3>
@@ -81,12 +81,20 @@
                             </div>
                             <?php 
                             $isAdmin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1;
-                            if (isset($_SESSION['user_id']) && ($_SESSION['user_id'] == $comment['user_id'] || $isAdmin)): 
+                            if (isset($_SESSION['user_id'])): 
                             ?>
-                                <a href="<?= BASE_URL ?>/index.php?url=comment/delete/<?= $comment['id'] ?>" onclick="return confirm('Opravdu chcete tento komentář smazat?')" class="text-xs text-rose-500 hover:text-rose-700 font-medium">Smazat</a>
+                                <div class="flex gap-3">
+                                    <?php if ($_SESSION['user_id'] == $comment['user_id']): ?>
+                                        <a href="<?= BASE_URL ?>/index.php?url=comment/edit/<?= $comment['id'] ?>" class="text-xs text-blue-500 hover:text-blue-700 font-medium">Upravit</a>
+                                    <?php endif; ?>
+                                    
+                                    <?php if ($_SESSION['user_id'] == $comment['user_id'] || $isAdmin): ?>
+                                        <a href="<?= BASE_URL ?>/index.php?url=comment/delete/<?= $comment['id'] ?>" onclick="return confirm('Opravdu chcete tento komentář smazat?')" class="text-xs text-rose-500 hover:text-rose-700 font-medium">Smazat</a>
+                                    <?php endif; ?>
+                                </div>
                             <?php endif; ?>
                         </div>
-                        <p class="text-slate-600 mt-1"><?= htmlspecialchars($comment['content']) ?></p>
+                        <p class="text-slate-600 mt-1 whitespace-pre-wrap"><?= htmlspecialchars($comment['content']) ?></p>
                     </div>
                 <?php endforeach; ?>
             <?php else: ?>

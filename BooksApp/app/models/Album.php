@@ -9,12 +9,12 @@ class Album {
 
     public function create(
         string $title,
-        string $author,
+        string $interpret,
         int $category, 
         int $subcategory, 
         int $year,
         float $price,
-        string $isbn,
+        string $catalog_number,
         string $description,
         string $link,
         array $images,
@@ -22,19 +22,19 @@ class Album {
         int $rating 
     ): bool {
         
-        $sql = "INSERT INTO albums (title, author, category, subcategory, year, price, isbn, description, link, images, created_by, rating)
-                VALUES (:title, :author, :category, :subcategory, :year, :price, :isbn, :description, :link, :images, :created_by, :rating)";
+        $sql = "INSERT INTO albums (title, interpret, category, subcategory, year, price, catalog_number, description, link, images, created_by, rating)
+                VALUES (:title, :interpret, :category, :subcategory, :year, :price, :catalog_number, :description, :link, :images, :created_by, :rating)";
         
         $stmt = $this->db->prepare($sql);
 
         return $stmt->execute([
             ':title' => $title,
-            ':author' => $author,
+            ':interpret' => $interpret,
             ':category' => $category,
             ':subcategory' => $subcategory ?: null,
             ':year' => $year,
             ':price' => $price,
-            ':isbn' => $isbn,
+            ':catalog_number' => $catalog_number,
             ':description' => $description,
             ':link' => $link,
             ':images' => json_encode($images),
@@ -56,6 +56,21 @@ class Album {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    // NOVÁ FUNKCE: Načtení alb pouze pro konkrétního uživatele
+    public function getAllByUserId($userId) {
+        $sql = "SELECT albums.*, categories.name AS category_name, subcategories.name AS subcategory_name 
+                FROM albums 
+                LEFT JOIN categories ON albums.category = categories.id 
+                LEFT JOIN subcategories ON albums.subcategory = subcategories.id
+                WHERE albums.created_by = :user_id
+                ORDER BY albums.id DESC";
+                
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([':user_id' => $userId]);
+        
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function getById($id) {
         $sql = "SELECT albums.*, categories.name AS category_name, subcategories.name AS subcategory_name 
                 FROM albums 
@@ -70,19 +85,19 @@ class Album {
     }
 
     public function update(
-        $id, $title, $author, $category, $subcategory, 
-        $year, $price, $isbn, $description, $link, $images = [], 
+        $id, $title, $interpret, $category, $subcategory, 
+        $year, $price, $catalog_number, $description, $link, $images = [], 
         $userId = null,
         $rating = 0
     ) {
         $sql = "UPDATE albums 
                 SET title = :title, 
-                    author = :author, 
+                    interpret = :interpret, 
                     category = :category, 
                     subcategory = :subcategory, 
                     year = :year, 
                     price = :price, 
-                    isbn = :isbn, 
+                    catalog_number = :catalog_number, 
                     description = :description, 
                     link = :link, 
                     images = :images,
@@ -95,12 +110,12 @@ class Album {
         return $stmt->execute([
             ':id' => $id,
             ':title' => $title,
-            ':author' => $author,
+            ':interpret' => $interpret,
             ':category' => $category,
             ':subcategory' => $subcategory ?: null,
             ':year' => $year,
             ':price' => $price,
-            ':isbn' => $isbn,
+            ':catalog_number' => $catalog_number,
             ':description' => $description,
             ':link' => $link,
             ':images' => json_encode($images),

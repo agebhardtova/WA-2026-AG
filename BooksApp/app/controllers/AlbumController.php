@@ -10,7 +10,12 @@ class AlbumController {
         $db = $database->getConnection();
 
         $albumModel = new Album($db);
-        $albums = $albumModel->getAll(); 
+        
+        if (isset($_SESSION['user_id'])) {
+            $albums = $albumModel->getAllByUserId($_SESSION['user_id']);
+        } else {
+            $albums = $albumModel->getAll(); 
+        }
         
         require_once '../app/views/albums/album_list.php';
     }
@@ -77,8 +82,8 @@ class AlbumController {
             
             $userId = $_SESSION['user_id'];
             $title = htmlspecialchars($_POST['title'] ?? '');
-            $author = htmlspecialchars($_POST['author'] ?? '');
-            $isbn = htmlspecialchars($_POST['isbn'] ?? '');
+            $interpret = htmlspecialchars($_POST['interpret'] ?? '');
+            $catalog_number = htmlspecialchars($_POST['catalog_number'] ?? '');
             $category = (int)($_POST['category'] ?? 0);
             $subcategory = (int)($_POST['subcategory'] ?? 0);
             $year = (int)($_POST['year'] ?? 0);
@@ -97,8 +102,8 @@ class AlbumController {
             $albumModel = new Album($db);
             
             $isSaved = $albumModel->create(
-                $title, $author, $category, $subcategory, 
-                $year, $price, $isbn, $description, $link, $uploadedImages,
+                $title, $interpret, $category, $subcategory, 
+                $year, $price, $catalog_number, $description, $link, $uploadedImages,
                 $userId, $rating
             );
 
@@ -153,6 +158,13 @@ class AlbumController {
         $albumModel = new Album($db);
         $album = $albumModel->getById($id);
 
+        $isAdmin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1;
+        if (!$album || ($album['created_by'] != $_SESSION['user_id'] && !$isAdmin)) {
+            $this->addErrorMessage('Nemáte oprávnění upravovat toto album.');
+            header('Location: ' . BASE_URL . '/index.php');
+            exit;
+        }
+
         $categoryModel = new Category($db);
         $categories = $categoryModel->getAllCategories();
         $subcategoryModel = new Subcategory($db);
@@ -162,7 +174,7 @@ class AlbumController {
     }
 
     public function update($id = null) {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && $id) {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && $id && isset($_SESSION['user_id'])) {
             require_once '../app/models/Database.php';
             require_once '../app/models/Album.php';
 
@@ -170,15 +182,23 @@ class AlbumController {
             $db = $database->getConnection();
             $albumModel = new Album($db);
             
+            $album = $albumModel->getById($id);
+            $isAdmin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1;
+            
+            if (!$album || ($album['created_by'] != $_SESSION['user_id'] && !$isAdmin)) {
+                $this->addErrorMessage('Nemáte oprávnění upravovat toto album.');
+                header('Location: ' . BASE_URL . '/index.php');
+                exit;
+            }
+            
             $uploadedImages = $this->processImageUploads();
             if (empty($uploadedImages)) {
-                $existing = $albumModel->getById($id);
-                $uploadedImages = json_decode($existing['images'] ?? '[]', true);
+                $uploadedImages = json_decode($album['images'] ?? '[]', true);
             }
 
             $albumModel->update(
-                $id, $_POST['title'], $_POST['author'], (int)$_POST['category'], (int)$_POST['subcategory'], 
-                (int)$_POST['year'], (float)$_POST['price'], htmlspecialchars($_POST['isbn']), 
+                $id, $_POST['title'], $_POST['interpret'], (int)$_POST['category'], (int)$_POST['subcategory'], 
+                (int)$_POST['year'], (float)$_POST['price'], htmlspecialchars($_POST['catalog_number']), 
                 htmlspecialchars($_POST['description']), htmlspecialchars($_POST['link']), 
                 $uploadedImages, $_SESSION['user_id'], (int)$_POST['rating']
             );
@@ -193,7 +213,6 @@ class AlbumController {
     protected function addErrorMessage($m) { $_SESSION['messages']['error'][] = $m; }
     
     protected function processImageUploads() {
-        // ... (ponech svůj původní kód pro upload obrázků)
         return []; 
     }
 }
